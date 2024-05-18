@@ -1,36 +1,41 @@
-[gd_scene load_steps=6 format=3 uid="uid://tgac4w11133b"]
+[gd_scene load_steps=7 format=3 uid="uid://tgac4w11133b"]
 
 [ext_resource type="Script" path="res://src/entities/fracturable_object/FOBody.gd" id="1_gbmbo"]
 [ext_resource type="Texture2D" uid="uid://bn7lj0gqf6pup" path="res://src/entities/fracturable_object/assets/egg.png" id="1_houwc"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m5qmq"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_53bcv"]
-radius = 512.0
+radius = 77.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b7y0l"]
-radius = 438.27
-height = 1024.0
+radius = 66.0
+height = 154.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e5mg1"]
-radius = 511.99
-height = 1129.26
+radius = 77.0
+height = 169.0
 
 [node name="FracturableObject" type="Node2D"]
 
-[node name="FOBody" type="CharacterBody2D" parent="."]
+[node name="FOBody" type="RigidBody2D" parent="."]
+disable_mode = 1
+mass = 0.01
+physics_material_override = SubResource("PhysicsMaterial_m5qmq")
 script = ExtResource("1_gbmbo")
 
 [node name="Sprite2D" type="Sprite2D" parent="FOBody"]
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_houwc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FOBody"]
-position = Vector2(0, 193)
+position = Vector2(0, 29)
 shape = SubResource("CircleShape2D_53bcv")
 debug_color = Color(8.18223e-07, 0.638061, 0.394231, 1)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="FOBody"]
-position = Vector2(0, -161)
+position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_b7y0l")
-one_way_collision_margin = 90.3
 debug_color = Color(0.415686, 0.462745, 1, 1)
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="FOBody"]
