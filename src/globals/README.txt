@@ -1,0 +1,1 @@
+use for game-wide autoloading scenes (ex. notification systems)
