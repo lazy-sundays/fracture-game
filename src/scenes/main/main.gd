@@ -3,6 +3,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#print_tree_pretty()
 	get_window().initial_position = 0;
 
 

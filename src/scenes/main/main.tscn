@@ -15,6 +15,7 @@ scale = Vector2(0.15, 0.15)
 position = Vector2(256, -5)
 
 [node name="BottomWall" parent="." instance=ExtResource("2_s4v4t")]
+unique_name_in_owner = true
 position = Vector2(256, 517)
 
 [node name="LeftWall" parent="." instance=ExtResource("2_s4v4t")]
