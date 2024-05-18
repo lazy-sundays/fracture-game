@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://tgac4w11133b"]
+[gd_scene load_steps=6 format=3 uid="uid://tgac4w11133b"]
 
+[ext_resource type="Script" path="res://src/entities/fracturable_object/FOBody.gd" id="1_gbmbo"]
 [ext_resource type="Texture2D" uid="uid://bn7lj0gqf6pup" path="res://src/entities/fracturable_object/assets/egg.png" id="1_houwc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_53bcv"]
@@ -16,6 +17,7 @@ height = 1129.26
 [node name="FracturableObject" type="Node2D"]
 
 [node name="FOBody" type="CharacterBody2D" parent="."]
+script = ExtResource("1_gbmbo")
 
 [node name="Sprite2D" type="Sprite2D" parent="FOBody"]
 texture = ExtResource("1_houwc")
