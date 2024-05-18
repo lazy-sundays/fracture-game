@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cu7wo6isadlrv"]
+
+[ext_resource type="PackedScene" uid="uid://tgac4w11133b" path="res://src/entities/fracturable_object/fracturable_object.tscn" id="1_1iujv"]
+
+[node name="Main" type="Node2D"]
+
+[node name="FracturableObject" parent="." instance=ExtResource("1_1iujv")]
+position = Vector2(250, 238)
+scale = Vector2(0.15, 0.15)
