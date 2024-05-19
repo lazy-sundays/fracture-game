@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://tgac4w11133b"]
+[gd_scene load_steps=8 format=3 uid="uid://tgac4w11133b"]
 
 [ext_resource type="Script" path="res://src/entities/fracturable_object/FOBody.gd" id="1_gbmbo"]
 [ext_resource type="Texture2D" uid="uid://bn7lj0gqf6pup" path="res://src/entities/fracturable_object/assets/egg.png" id="1_houwc"]
@@ -6,14 +6,17 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m5qmq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_53bcv"]
-radius = 77.0
+radius = 78.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ed1rj"]
+radius = 75.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b7y0l"]
-radius = 66.0
+radius = 63.0
 height = 154.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e5mg1"]
-radius = 77.0
+radius = 74.0
 height = 169.0
 
 [node name="FracturableObject" type="Node2D"]
@@ -31,18 +34,27 @@ script = ExtResource("1_gbmbo")
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_houwc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FOBody"]
-position = Vector2(0, 29)
+[node name="CenterCircle" type="CollisionShape2D" parent="FOBody"]
+unique_name_in_owner = true
+position = Vector2(0, 13)
 shape = SubResource("CircleShape2D_53bcv")
-debug_color = Color(8.18223e-07, 0.638061, 0.394231, 1)
+debug_color = Color(0, 0.639216, 0.396078, 0.537255)
 
-[node name="CenterCapsule" type="CollisionShape2D" parent="FOBody"]
+[node name="CenterCircle2" type="CollisionShape2D" parent="FOBody"]
+unique_name_in_owner = true
+position = Vector2(0, -15)
+shape = SubResource("CircleShape2D_ed1rj")
+debug_color = Color(0.987004, 0, 0.348685, 0.537255)
+
+[node name="TopCapsule" type="CollisionShape2D" parent="FOBody"]
 unique_name_in_owner = true
 position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_b7y0l")
 debug_color = Color(0.415686, 0.462745, 1, 1)
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="FOBody"]
+[node name="BottomCapsule" type="CollisionShape2D" parent="FOBody"]
+unique_name_in_owner = true
+position = Vector2(0, 21)
 shape = SubResource("CapsuleShape2D_e5mg1")
 
 [connection signal="body_shape_entered" from="FOBody" to="FOBody" method="_on_body_shape_entered"]
