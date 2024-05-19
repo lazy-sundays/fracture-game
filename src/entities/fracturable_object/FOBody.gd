@@ -2,6 +2,7 @@ extends RigidBody2D
 
 @export var fracture_threshold = 500
 @export var max_speed = 3000
+@export var enable_sounds = true
 
 var happy_texture = preload("res://src/entities/fracturable_object/assets/happyegg.png")
 var mid_texture = preload("res://src/entities/fracturable_object/assets/midegg.png")
@@ -33,35 +34,36 @@ func _ready():
 	is_resting = false;
 	update_face("happy")
 	
-	audio_player = AudioStreamPlayer.new()
-	add_child(audio_player)
-	bounce_audio_stream = AudioStreamRandomizer.new()
-	bounce_audio_stream.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM
-	var dir = DirAccess.open(bounce_audio_directory)
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			file_name = dir.get_next()
-			if !(file_name.ends_with(".import")):
-				bounce_audio_stream.add_stream(-1, load(bounce_audio_directory + file_name))
-	else:
-		print("An error occurred when trying to access the path.")
-		
-	crack_audio_player = AudioStreamPlayer.new()
-	add_child(crack_audio_player)
-	crack_audio_stream = AudioStreamRandomizer.new()
-	crack_audio_stream.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM
-	dir = DirAccess.open(crack_audio_directory)
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			file_name = dir.get_next()
-			if !(file_name.ends_with(".import")):
-				crack_audio_stream.add_stream(-1, load(crack_audio_directory + file_name))
-	else:
-		print("An error occurred when trying to access the path.")
+	if enable_sounds:
+		audio_player = AudioStreamPlayer.new()
+		add_child(audio_player)
+		bounce_audio_stream = AudioStreamRandomizer.new()
+		bounce_audio_stream.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM
+		var dir = DirAccess.open(bounce_audio_directory)
+		if dir:
+			dir.list_dir_begin()
+			var file_name = dir.get_next()
+			while file_name != "":
+				file_name = dir.get_next()
+				if !(file_name.ends_with(".import")):
+					bounce_audio_stream.add_stream(-1, load(bounce_audio_directory + file_name))
+		else:
+			print("An error occurred when trying to access the path.")
+			
+		crack_audio_player = AudioStreamPlayer.new()
+		add_child(crack_audio_player)
+		crack_audio_stream = AudioStreamRandomizer.new()
+		crack_audio_stream.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM
+		dir = DirAccess.open(crack_audio_directory)
+		if dir:
+			dir.list_dir_begin()
+			var file_name = dir.get_next()
+			while file_name != "":
+				file_name = dir.get_next()
+				if !(file_name.ends_with(".import")):
+					crack_audio_stream.add_stream(-1, load(crack_audio_directory + file_name))
+		else:
+			print("An error occurred when trying to access the path.")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -146,11 +148,11 @@ func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
 		%FaceTimer.start()
 		
 		draw_fracture()
-		if !(crack_audio_player.is_playing()):
+		if enable_sounds and !(crack_audio_player.is_playing()):
 			crack_audio_player.set_stream(crack_audio_stream)
 			crack_audio_player.pitch_scale = 1.2
 			crack_audio_player.play()
-	if !(audio_player.is_playing()):
+	if enable_sounds and !(audio_player.is_playing()):
 		audio_player.set_stream(bounce_audio_stream)
 		audio_player.pitch_scale = 1.0
 		audio_player.play()
@@ -166,3 +168,7 @@ func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 
 func _on_face_timer_timeout():
 	reset_face()
+
+func _input(event):
+	if event.is_action_pressed("Toggle Sounds"):
+		enable_sounds = !enable_sounds
