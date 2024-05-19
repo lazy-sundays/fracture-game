@@ -44,9 +44,10 @@ func _ready():
 			dir.list_dir_begin()
 			var file_name = dir.get_next()
 			while file_name != "":
-				file_name = dir.get_next()
 				if !(file_name.ends_with(".import")):
+					print(file_name)
 					bounce_audio_stream.add_stream(-1, load(bounce_audio_directory + file_name))
+				file_name = dir.get_next()
 		else:
 			print("An error occurred when trying to access the path.")
 			
@@ -59,9 +60,9 @@ func _ready():
 			dir.list_dir_begin()
 			var file_name = dir.get_next()
 			while file_name != "":
-				file_name = dir.get_next()
 				if !(file_name.ends_with(".import")):
 					crack_audio_stream.add_stream(-1, load(crack_audio_directory + file_name))
+				file_name = dir.get_next()
 		else:
 			print("An error occurred when trying to access the path.")
 
