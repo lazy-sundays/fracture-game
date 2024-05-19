@@ -27,13 +27,15 @@ func _process(delta):
 	current_window_position = WINDOW.position
 	window_position_change = current_window_position - last_window_position
 	last_window_position = current_window_position
-	print(is_resting)
 	
 func _integrate_forces(state):
+	# set maximum speed
+	var mag = min(max_speed, state.linear_velocity.length())
+	state.linear_velocity = state.linear_velocity.normalized() * mag
+	
+	# capture collision point
 	if state.get_contact_count() > 0:
-		collision_pos = to_local(state.get_contact_local_position(0))
-	var len = min(max_speed, state.linear_velocity.length())
-	state.linear_velocity = state.linear_velocity.normalized() * len
+			collision_pos = to_local(state.get_contact_local_position(0))
 
 func _physics_process(delta):
 	speed = linear_velocity
@@ -41,11 +43,13 @@ func _physics_process(delta):
 		apply_force(Vector2(window_position_change.x, window_position_change.y))
 	else:
 		apply_force(Vector2(-window_position_change.x, -window_position_change.y))
-	print(speed.length())
 		
 	
-func is_in_circle(pt: Vector2, center: Vector2, radius):
+func is_in_circle(pt: Vector2, center: Vector2, radius) -> bool:
 	return ((pt.x - center.x)**2 + (pt.y - center.y)**2 < radius**2)
+	
+func is_in_bounding_box(pt: Vector2, topLeft: Vector2, bottomRight: Vector2) -> bool:
+	return (topLeft.x < pt.x && pt.x < bottomRight.x) && (topLeft.y > pt.y && pt.y > bottomRight.y)
 	
 func draw_fracture():
 	# find point near center of egg to fracture to
@@ -79,7 +83,6 @@ func draw_fracture():
 	add_child(line)
 
 func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	#print(speed.length())
 	var object_hit = body.get_name()
 	if (object_hit == "WallEdge"):
 		is_resting = true;

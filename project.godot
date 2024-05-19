@@ -21,6 +21,10 @@ window/size/viewport_width=512
 window/size/viewport_height=512
 window/size/resizable=false
 
+[physics]
+
+common/physics_ticks_per_second=144
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

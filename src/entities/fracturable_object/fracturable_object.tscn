@@ -6,10 +6,10 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m5qmq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_53bcv"]
-radius = 78.0
+radius = 79.1581
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ed1rj"]
-radius = 75.0
+radius = 74.027
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b7y0l"]
 radius = 63.0
@@ -17,7 +17,7 @@ height = 154.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e5mg1"]
 radius = 74.0
-height = 169.0
+height = 170.0
 
 [node name="FracturableObject" type="Node2D"]
 
@@ -26,6 +26,7 @@ unique_name_in_owner = true
 disable_mode = 1
 mass = 0.01
 physics_material_override = SubResource("PhysicsMaterial_m5qmq")
+continuous_cd = 2
 max_contacts_reported = 2
 contact_monitor = true
 script = ExtResource("1_gbmbo")
@@ -48,7 +49,7 @@ debug_color = Color(0.987004, 0, 0.348685, 0.537255)
 
 [node name="TopCapsule" type="CollisionShape2D" parent="FOBody"]
 unique_name_in_owner = true
-position = Vector2(0, -24)
+position = Vector2(0, -25)
 shape = SubResource("CapsuleShape2D_b7y0l")
 debug_color = Color(0.415686, 0.462745, 1, 1)
 
@@ -56,6 +57,9 @@ debug_color = Color(0.415686, 0.462745, 1, 1)
 unique_name_in_owner = true
 position = Vector2(0, 21)
 shape = SubResource("CapsuleShape2D_e5mg1")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 194.072)
 
 [connection signal="body_shape_entered" from="FOBody" to="FOBody" method="_on_body_shape_entered"]
 [connection signal="body_shape_exited" from="FOBody" to="FOBody" method="_on_body_shape_exited"]

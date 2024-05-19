@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dh05v7q8pqsux"]
+
+[ext_resource type="Texture2D" uid="uid://c5bquips0yvb5" path="res://src/menus/title/assets/title_logo.png" id="1_rap77"]
+[ext_resource type="Texture2D" uid="uid://dx48iur0l47do" path="res://src/menus/title/assets/start.png" id="2_idhmq"]
+
+[node name="TitleScreen" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TitleLogo" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_rap77")
+stretch_mode = 2
+
+[node name="MenuOptions" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StartGame" type="TextureRect" parent="VBoxContainer/MenuOptions"]
+layout_mode = 2
+texture = ExtResource("2_idhmq")
+stretch_mode = 2
