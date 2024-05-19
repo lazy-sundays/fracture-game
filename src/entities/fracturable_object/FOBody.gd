@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 @export var fracture_threshold = 500
+@export var max_speed = 3000
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity") # default of 980
@@ -10,6 +11,7 @@ var window_position_change;
 var current_window_position;
 var collision_pos = Vector2(0.0, 0.0)
 var speed = Vector2(0, 0)
+var is_resting;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,20 +20,29 @@ func _ready():
 	last_window_position = WINDOW.position
 	current_window_position = WINDOW.position
 	window_position_change = Vector2i(0,0)
+	is_resting = false;
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	current_window_position = WINDOW.position
 	window_position_change = current_window_position - last_window_position
 	last_window_position = current_window_position
+	print(is_resting)
 	
 func _integrate_forces(state):
 	if state.get_contact_count() > 0:
 		collision_pos = to_local(state.get_contact_local_position(0))
+	var len = min(max_speed, state.linear_velocity.length())
+	state.linear_velocity = state.linear_velocity.normalized() * len
 
 func _physics_process(delta):
 	speed = linear_velocity
-	apply_force(Vector2(-window_position_change.x, -window_position_change.y))
+	if (is_resting):
+		apply_force(Vector2(window_position_change.x, window_position_change.y))
+	else:
+		apply_force(Vector2(-window_position_change.x, -window_position_change.y))
+	print(speed.length())
+		
 	
 func is_in_circle(pt: Vector2, center: Vector2, radius):
 	return ((pt.x - center.x)**2 + (pt.y - center.y)**2 < radius**2)
@@ -68,6 +79,15 @@ func draw_fracture():
 	add_child(line)
 
 func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	print(speed.length())
+	#print(speed.length())
+	var object_hit = body.get_name()
+	if (object_hit == "WallEdge"):
+		is_resting = true;
 	if (speed.length() > fracture_threshold):
 		draw_fracture()
+
+
+func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
+	var object_hit = body.get_name()
+	if (object_hit == "WallEdge"):
+		is_resting = false;

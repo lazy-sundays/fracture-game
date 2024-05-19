@@ -4,7 +4,7 @@
 bounce = 0.75
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3m5vg"]
-size = Vector2(512, 10)
+size = Vector2(512, 50)
 
 [node name="Wall" type="Node2D"]
 

@@ -58,3 +58,4 @@ position = Vector2(0, 21)
 shape = SubResource("CapsuleShape2D_e5mg1")
 
 [connection signal="body_shape_entered" from="FOBody" to="FOBody" method="_on_body_shape_entered"]
+[connection signal="body_shape_exited" from="FOBody" to="FOBody" method="_on_body_shape_exited"]
