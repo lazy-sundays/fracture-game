@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://tgac4w11133b"]
 
 [ext_resource type="Script" path="res://src/entities/fracturable_object/FOBody.gd" id="1_gbmbo"]
-[ext_resource type="Texture2D" uid="uid://bn7lj0gqf6pup" path="res://src/entities/fracturable_object/assets/egg.png" id="1_houwc"]
+[ext_resource type="Texture2D" uid="uid://dsp85qxkdxfly" path="res://src/entities/fracturable_object/assets/egg.png" id="1_houwc"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m5qmq"]
 
@@ -26,13 +26,13 @@ unique_name_in_owner = true
 disable_mode = 1
 mass = 0.01
 physics_material_override = SubResource("PhysicsMaterial_m5qmq")
-continuous_cd = 2
+continuous_cd = 1
 max_contacts_reported = 2
 contact_monitor = true
 script = ExtResource("1_gbmbo")
 
 [node name="Sprite2D" type="Sprite2D" parent="FOBody"]
-scale = Vector2(0.15, 0.15)
+scale = Vector2(2.25, 2.25)
 texture = ExtResource("1_houwc")
 
 [node name="CenterCircle" type="CollisionShape2D" parent="FOBody"]
