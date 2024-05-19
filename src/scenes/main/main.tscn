@@ -14,7 +14,7 @@ offset_bottom = 40.0
 texture = ExtResource("2_w8bov")
 
 [node name="FracturableObject" parent="." instance=ExtResource("1_1iujv")]
-position = Vector2(254, 245)
+position = Vector2(244, 113)
 
 [node name="TopWall" parent="." instance=ExtResource("2_s4v4t")]
 position = Vector2(256, -25)
