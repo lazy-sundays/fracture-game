@@ -16,7 +16,12 @@ var current_window_position;
 var collision_pos = Vector2(0.0, 0.0)
 var speed = Vector2(0, 0)
 var is_resting;
-var face_lock;
+var audio_player;
+var bounce_audio_stream;
+const bounce_audio_directory = "res://src/entities/fracturable_object/assets/sounds/bounce/";
+var crack_audio_player;
+var crack_audio_stream;
+const crack_audio_directory = "res://src/entities/fracturable_object/assets/sounds/crack/";
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,6 +32,36 @@ func _ready():
 	window_position_change = Vector2i(0,0)
 	is_resting = false;
 	update_face("happy")
+	
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	bounce_audio_stream = AudioStreamRandomizer.new()
+	bounce_audio_stream.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM
+	var dir = DirAccess.open(bounce_audio_directory)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			file_name = dir.get_next()
+			if !(file_name.ends_with(".import")):
+				bounce_audio_stream.add_stream(-1, load(bounce_audio_directory + file_name))
+	else:
+		print("An error occurred when trying to access the path.")
+		
+	crack_audio_player = AudioStreamPlayer.new()
+	add_child(crack_audio_player)
+	crack_audio_stream = AudioStreamRandomizer.new()
+	crack_audio_stream.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM
+	dir = DirAccess.open(crack_audio_directory)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			file_name = dir.get_next()
+			if !(file_name.ends_with(".import")):
+				crack_audio_stream.add_stream(-1, load(crack_audio_directory + file_name))
+	else:
+		print("An error occurred when trying to access the path.")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -111,6 +146,15 @@ func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index)
 		%FaceTimer.start()
 		
 		draw_fracture()
+		if !(crack_audio_player.is_playing()):
+			crack_audio_player.set_stream(crack_audio_stream)
+			crack_audio_player.pitch_scale = 1.2
+			crack_audio_player.play()
+	if !(audio_player.is_playing()):
+		audio_player.set_stream(bounce_audio_stream)
+		audio_player.pitch_scale = 1.0
+		audio_player.play()
+		
 
 
 func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
