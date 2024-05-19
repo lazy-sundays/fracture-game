@@ -1,23 +1,23 @@
 [gd_scene load_steps=8 format=3 uid="uid://tgac4w11133b"]
 
 [ext_resource type="Script" path="res://src/entities/fracturable_object/FOBody.gd" id="1_gbmbo"]
-[ext_resource type="Texture2D" uid="uid://bn7lj0gqf6pup" path="res://src/entities/fracturable_object/assets/egg.png" id="1_houwc"]
+[ext_resource type="Texture2D" uid="uid://cbuax43q6d47r" path="res://src/entities/fracturable_object/assets/egg.png" id="1_houwc"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m5qmq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_53bcv"]
-radius = 79.1581
+radius = 71.007
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ed1rj"]
-radius = 74.027
+radius = 69.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b7y0l"]
 radius = 63.0
 height = 154.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e5mg1"]
-radius = 74.0
-height = 170.0
+radius = 69.0
+height = 150.0
 
 [node name="FracturableObject" type="Node2D"]
 
@@ -26,13 +26,13 @@ unique_name_in_owner = true
 disable_mode = 1
 mass = 0.01
 physics_material_override = SubResource("PhysicsMaterial_m5qmq")
-continuous_cd = 2
+continuous_cd = 1
 max_contacts_reported = 2
 contact_monitor = true
 script = ExtResource("1_gbmbo")
 
 [node name="Sprite2D" type="Sprite2D" parent="FOBody"]
-scale = Vector2(0.15, 0.15)
+unique_name_in_owner = true
 texture = ExtResource("1_houwc")
 
 [node name="CenterCircle" type="CollisionShape2D" parent="FOBody"]
@@ -43,23 +43,25 @@ debug_color = Color(0, 0.639216, 0.396078, 0.537255)
 
 [node name="CenterCircle2" type="CollisionShape2D" parent="FOBody"]
 unique_name_in_owner = true
-position = Vector2(0, -15)
+position = Vector2(1, -9)
 shape = SubResource("CircleShape2D_ed1rj")
 debug_color = Color(0.987004, 0, 0.348685, 0.537255)
 
 [node name="TopCapsule" type="CollisionShape2D" parent="FOBody"]
 unique_name_in_owner = true
-position = Vector2(0, -25)
+position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_b7y0l")
 debug_color = Color(0.415686, 0.462745, 1, 1)
 
 [node name="BottomCapsule" type="CollisionShape2D" parent="FOBody"]
 unique_name_in_owner = true
-position = Vector2(0, 21)
+position = Vector2(1, 22)
 shape = SubResource("CapsuleShape2D_e5mg1")
 
-[node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(0, 194.072)
+[node name="FaceTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
 
 [connection signal="body_shape_entered" from="FOBody" to="FOBody" method="_on_body_shape_entered"]
 [connection signal="body_shape_exited" from="FOBody" to="FOBody" method="_on_body_shape_exited"]
+[connection signal="timeout" from="FaceTimer" to="FOBody" method="_on_face_timer_timeout"]

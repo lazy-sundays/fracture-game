@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbuax43q6d47r"
-path="res://.godot/imported/egg.png-8c70e15102f91f7268596e117ff52852.ctex"
+uid="uid://cwia5u1a8uud0"
+path="res://.godot/imported/happyegg.png-d37a625404bf298c833086e71cd870a7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/entities/fracturable_object/assets/egg.png"
-dest_files=["res://.godot/imported/egg.png-8c70e15102f91f7268596e117ff52852.ctex"]
+source_file="res://src/menus/common/assets/happyegg.png"
+dest_files=["res://.godot/imported/happyegg.png-d37a625404bf298c833086e71cd870a7.ctex"]
 
 [params]
 

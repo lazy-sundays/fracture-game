@@ -3,6 +3,10 @@ extends RigidBody2D
 @export var fracture_threshold = 500
 @export var max_speed = 3000
 
+var happy_texture = preload("res://src/entities/fracturable_object/assets/happyegg.png")
+var mid_texture = preload("res://src/entities/fracturable_object/assets/midegg.png")
+var sad_texture = preload("res://src/entities/fracturable_object/assets/sadegg.png")
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity") # default of 980
 var WINDOW;
@@ -18,6 +22,7 @@ const bounce_audio_directory = "res://src/entities/fracturable_object/assets/sou
 var crack_audio_player;
 var crack_audio_stream;
 const crack_audio_directory = "res://src/entities/fracturable_object/assets/sounds/crack/";
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	WINDOW = get_window();
@@ -26,6 +31,7 @@ func _ready():
 	current_window_position = WINDOW.position
 	window_position_change = Vector2i(0,0)
 	is_resting = false;
+	update_face("happy")
 	
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
@@ -56,7 +62,6 @@ func _ready():
 				crack_audio_stream.add_stream(-1, load(crack_audio_directory + file_name))
 	else:
 		print("An error occurred when trying to access the path.")
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -102,9 +107,9 @@ func draw_fracture():
 	#initialize fracture settings
 	var line = Line2D.new()
 	line.default_color = Color(0, 0, 0)
-	line.width = randf_range(0.1, 1.0)
+	line.width = randf_range(1.5, 3.0)
 	
-	var num_fractures = randi_range(5, 20)
+	var num_fractures = randi_range(5, 15)
 	
 	# build the fracture path and draw
 	line.add_point(collision_pos)
@@ -117,12 +122,29 @@ func draw_fracture():
 	line.add_point(inner_pt)
 	
 	add_child(line)
+	
+func update_face(mood):
+	match(mood):
+		"happy":
+			%Sprite2D.texture = happy_texture
+		"mid":
+			%Sprite2D.texture = mid_texture
+		"sad":
+			%Sprite2D.texture = sad_texture
+		_:
+			%Sprite2D.texture = happy_texture
+
+func reset_face():
+	update_face("mid")
 
 func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	var object_hit = body.get_name()
 	if (object_hit == "WallEdge"):
 		is_resting = true;
 	if (speed.length() > fracture_threshold):
+		update_face("sad")
+		%FaceTimer.start()
+		
 		draw_fracture()
 		if !(crack_audio_player.is_playing()):
 			crack_audio_player.set_stream(crack_audio_stream)
@@ -139,3 +161,8 @@ func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	var object_hit = body.get_name()
 	if (object_hit == "WallEdge"):
 		is_resting = false;
+	if %FaceTimer.is_stopped():
+		update_face("happy")
+
+func _on_face_timer_timeout():
+	reset_face()
