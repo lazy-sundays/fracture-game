@@ -30,16 +30,39 @@ func _physics_process(delta):
 	apply_force(Vector2(-window_position_change.x, -window_position_change.y))
 	
 func draw_fracture():
+	# find point near center of egg to fracture to
 	var w = %CenterCapsule.shape.radius
 	var h = %CenterCapsule.shape.height / 2
 	var x = randi_range(-w, w)
 	var y = randi_range(-h, h)
+	var inner_pt = Vector2(x, y)
 	
+	#calculate fracture path
 	var line = Line2D.new()
-	line.default_color = Color(0, 0, 1)
-	line.width = 5.0
-	line.add_point(Vector2(x, y))
+	line.default_color = Color(0, 0, 0)
+	line.width = 1.0
+	
+	var num_fractures = randi_range(5, 20)
+	
 	line.add_point(collision_pos)
+	for n in range(1, num_fractures):
+		var a = float(n) / num_fractures
+		var normal = (randf_range(-1.0 / num_fractures, 1.0 / num_fractures) * collision_pos.distance_to(inner_pt))
+		var px = ((1 - a) * collision_pos.x) + (a * x) + normal
+		var py = ((1 - a) * collision_pos.y) + (a * y) + normal
+		if px < -w:
+			px = -w;
+		if px > w:
+			px = w;
+		if py < -h:
+			py = -h;
+		if py > h:
+			py = h;
+		print(collision_pos)
+		print(Vector2(px, py))
+		print(inner_pt)
+		line.add_point(Vector2(px, py))
+	line.add_point(inner_pt)
 	add_child(line)
 
 func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
