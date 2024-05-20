@@ -45,7 +45,6 @@ func _ready():
 			var file_name = dir.get_next()
 			while file_name != "":
 				if !(file_name.ends_with(".import")):
-					print(file_name)
 					bounce_audio_stream.add_stream(-1, load(bounce_audio_directory + file_name))
 				file_name = dir.get_next()
 		else:
